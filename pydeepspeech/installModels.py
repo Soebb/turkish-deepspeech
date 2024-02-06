@@ -6,7 +6,7 @@ import threading
 from pathlib import Path
 
 import requests
-
+requests.packages.urllib3.disable_warnings()
 from pydeepspeech.util import get_appdatadir
 
 # AI model used for the application
@@ -26,7 +26,7 @@ def download_file(url, outfile) -> None:
         tmp = f'{outfile}.tmp'
         if os.path.exists(tmp):
             os.remove(tmp)
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, verify=False) as r:
             r.raise_for_status()
             with open(tmp, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192): 
